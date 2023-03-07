@@ -13,7 +13,7 @@ public:
 
 	Instance(){}
 
-    Instance(vector<bool> map, const vector<vector<std::pair<int64_t , int64_t >>> &agents, int nRows, int nCols);
+    Instance(vector<bool> map, const vector<vector<int>> &agents, int nRows, int nCols);
 
 
 		inline bool isObstacle(int loc) const { return my_map[loc]; }

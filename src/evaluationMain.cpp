@@ -45,12 +45,12 @@ int main(int argc, char** argv){
     auto end = std::chrono::steady_clock::now();
     std::chrono::duration<double> elapsed = end - start;
 
-    for (const auto& agentRoute : result){
-        for(const auto& coord : agentRoute){
-            std::cout << '(' << coord.first << ',' << coord.second << "),";
-        }
-        std::cout << '\n';
-    }
+//    for (const auto& agentRoute : result){
+//        for(const auto& coord : agentRoute){
+//            std::cout << '(' << coord.first << ',' << coord.second << "),";
+//        }
+//        std::cout << '\n';
+//    }
 
     Instance instance(
         env.getGrid(vm["grid_path"].as<string>()),
@@ -58,8 +58,6 @@ int main(int argc, char** argv){
         env.getNRows(),
         env.getNCols()
     );
-
-    instance.printMap();
 
     PBS pbs(instance, true, 1);
 

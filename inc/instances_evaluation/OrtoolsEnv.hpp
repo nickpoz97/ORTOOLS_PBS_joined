@@ -18,7 +18,7 @@
 #include "typeDefs.hpp"
 #include "instances_evaluation/BaseEnv.hpp"
 
-using TASolution = std::vector<std::vector<Coord2D>>;
+using TASolution = std::vector<std::vector<int>>;
 
 class OrtoolsEnv : public BaseEnv{
 public:

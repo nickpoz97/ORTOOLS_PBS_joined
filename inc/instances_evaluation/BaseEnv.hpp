@@ -22,8 +22,6 @@
 class BaseEnv{
 public:
     static int64_t from2Dto1D(int64_t x, int64_t y, size_t nCols);
-    bool solve(int capacity, int makespan, const std::filesystem::path &outputDirPath = "") const;
-    void solve(int capacity, const std::filesystem::path &outputDirPath = "") const;
 
     [[nodiscard]] std::vector<bool> getGrid(const std::filesystem::path& mapPath) const;
 
