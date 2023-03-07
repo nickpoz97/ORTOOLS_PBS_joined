@@ -25,18 +25,25 @@ public:
     bool solve(int capacity, int makespan, const std::filesystem::path &outputDirPath = "") const;
     void solve(int capacity, const std::filesystem::path &outputDirPath = "") const;
 
+    [[nodiscard]] std::vector<bool> getGrid(const std::filesystem::path& mapPath) const;
+
+    size_t getNRows() const;
+
+    size_t getNCols() const;
+
 protected:
     BaseEnv(const std::filesystem::path &agentsFilePath, const std::filesystem::path &taskFilePath,
             const std::filesystem::path &distanceMatrixPath);
-
-    size_t nRows = 0;
-    size_t nCols = 0;
 
     const CompressedCoordVector agents;
     const CompressedTasksVector tasks;
     const CompressedDistanceMatrix distanceMatrix;
 
     int64_t getMaxDistance() const;
+    [[nodiscard]] int linearizeCoord(const Coord2D& coord) const;
+
+    size_t nRows;
+    size_t nCols;
 private:
     static CompressedCoordVector extractRobotPositions(const std::filesystem::path &agentsFilePath, size_t &nRows, size_t &nCols);
     static CompressedTasksVector extractTasks(const std::filesystem::path &taskFilePath, size_t nCols);

@@ -1,7 +1,6 @@
 #pragma once
 #include"common.h"
 
-
 // Currently only works for undirected unweighted 4-nighbor grids
 class Instance 
 {
@@ -13,11 +12,8 @@ public:
 	// enum valid_moves_t { NORTH, EAST, SOUTH, WEST, WAIT_MOVE, MOVE_COUNT };  // MOVE_COUNT is the enum's size
 
 	Instance(){}
-	Instance(const string& map_fname, const string& agent_fname, 
-		int num_of_agents = 0, int num_of_rows = 0, int num_of_cols = 0, int num_of_obstacles = 0, int warehouse_width = 0);
 
-
-	void printAgents() const;
+    Instance(vector<bool> map, const vector<vector<std::pair<int64_t , int64_t >>> &agents, int nRows, int nCols);
 
 
 		inline bool isObstacle(int loc) const { return my_map[loc]; }
@@ -62,6 +58,7 @@ public:
 
 	int getDefaultNumberOfAgents() const { return num_of_agents; }
 
+    void printMap() const;
 private:
 	  // int moves_offset[MOVE_COUNT];
 	  vector<bool> my_map;
@@ -72,7 +69,6 @@ private:
 	  vector<vector<int>> locations;
 
 	  bool loadMap();
-	  void printMap() const;
 	  void saveMap() const;
 
 	  bool loadAgents();

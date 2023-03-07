@@ -18,7 +18,7 @@
 #include "typeDefs.hpp"
 #include "instances_evaluation/BaseEnv.hpp"
 
-using TASolution = std::vector<std::list<Coord2D>>;
+using TASolution = std::vector<std::vector<Coord2D>>;
 
 class OrtoolsEnv : public BaseEnv{
 public:
@@ -33,7 +33,6 @@ public:
     TASolution solve(int capacity) const;
 
     [[nodiscard]] Coord2D get2DCoord(size_t globalIndex) const;
-
 private:
     static constexpr char distanceDimensionString[] = "Distance";
     static constexpr char capacityDimensionString[] = "Capacity";

@@ -4,6 +4,7 @@
 #include <random>
 #include <cstdint>
 #include <algorithm>
+#include <boost/tokenizer.hpp>
 #include "instances_evaluation/BaseEnv.hpp"
 
 int64_t BaseEnv::from2Dto1D(int64_t x, int64_t y, size_t nCols) {
@@ -159,4 +160,39 @@ int64_t BaseEnv::getMaxDistance() const {
     }
 
     return maxDistance;
+}
+
+std::vector<bool> BaseEnv::getGrid(const std::filesystem::path &mapPath) const {
+    using namespace boost;
+
+    std::vector<bool> grid;
+
+    std::ifstream myfile(mapPath, std::ios::in);
+    if (!myfile.is_open())
+        throw std::runtime_error("wrong grid file");
+
+    std::string line;
+    grid.reserve(nRows * nCols);
+
+    // read map (&& start/goal locations)
+    for (int i = 0; i < nRows; i++) {
+        getline(myfile, line);
+        for (int j = 0; j < nCols; j++) {
+            grid[linearizeCoord({i, j})] = (line[j] == '@');
+        }
+    }
+
+    return grid;
+}
+
+int BaseEnv::linearizeCoord(const Coord2D &coord) const {
+    return coord.second + nCols * coord.first;
+}
+
+size_t BaseEnv::getNRows() const {
+    return nRows;
+}
+
+size_t BaseEnv::getNCols() const {
+    return nCols;
 }

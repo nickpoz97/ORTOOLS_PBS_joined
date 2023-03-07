@@ -158,7 +158,7 @@ TASolution OrtoolsEnv::getSolution(const operations_research::Assignment *pSolut
     solution.reserve(agents.size());
 
     for(int vehicleId = 0 ; vehicleId < agents.size() ; ++vehicleId ){
-        std::list<Coord2D> values{};
+        std::vector<Coord2D> values{};
 
         auto index = routingModel.Start(vehicleId);
         while(!routingModel.IsEnd(index)){
@@ -166,7 +166,8 @@ TASolution OrtoolsEnv::getSolution(const operations_research::Assignment *pSolut
             values.push_back(get2DCoord(nodeIndex));
             index = pSolution->Value(routingModel.NextVar(index));
         }
-        solution.push_back(values);
+        values.resize(values.size());
+        solution.push_back(std::move(values));
     }
 
     return solution;

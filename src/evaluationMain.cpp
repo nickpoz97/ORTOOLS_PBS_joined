@@ -1,5 +1,7 @@
 #include "instances_evaluation/OrtoolsEnv.hpp"
 #include "commonFunctions.hpp"
+#include "Instance.h"
+#include "PBS.h"
 #include <boost/program_options.hpp>
 #include <string>
 #include <chrono>
@@ -40,7 +42,6 @@ int main(int argc, char** argv){
 
     auto result = env.solve(vm["c"].as<int>());
 
-
     auto end = std::chrono::steady_clock::now();
     std::chrono::duration<double> elapsed = end - start;
 
@@ -50,6 +51,27 @@ int main(int argc, char** argv){
         }
         std::cout << '\n';
     }
+
+    Instance instance(
+        env.getGrid(vm["grid_path"].as<string>()),
+        result,
+        env.getNRows(),
+        env.getNCols()
+    );
+
+    instance.printMap();
+
+    PBS pbs(instance, true, 1);
+
+    srand(0);
+    pbs.solve(7200);
+
+    if (pbs.solution_found){
+        pbs.printPaths();
+    }
+
+    pbs.clearSearchEngines();
+
 //    std::cout
 //        << vm["a"].as<int>() << ","
 //        << vm["t"].as<int>() << ","

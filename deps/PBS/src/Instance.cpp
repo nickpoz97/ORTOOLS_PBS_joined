@@ -1,37 +1,11 @@
-#include<boost/tokenizer.hpp>
 #include <algorithm>    // std::shuffle
 #include <random>      // std::default_random_engine
 #include <chrono>       // std::chrono::system_clock
+#include <utility>
+#include <boost/tokenizer.hpp>
 #include"Instance.h"
 
 int RANDOM_WALK_STEPS = 100000;
-
-Instance::Instance(const string& map_fname, const string& agent_fname, 
-	int num_of_agents, int num_of_rows, int num_of_cols, int num_of_obstacles, int warehouse_width):
-	map_fname(map_fname), agent_fname(agent_fname), num_of_agents(num_of_agents)
-{
-	bool succ = loadMap();
-	if (!succ)
-	{
-		if (num_of_rows > 0 && num_of_cols > 0 && num_of_obstacles >= 0 && 
-			num_of_obstacles < num_of_rows * num_of_cols) // generate random grid
-		{
-			generateConnectedRandomGrid(num_of_rows, num_of_cols, num_of_obstacles);
-			saveMap();
-		}
-		else
-		{
-			cerr << "Map file " << map_fname << " not found." << endl;
-			exit(-1);
-		}
-	}
-
-	succ = loadAgents();
-	if (!succ) {
-		cerr << "Agent file " << agent_fname << " not found." << endl;
-		exit(-1);
-	}
-}
 
 
 int Instance::randomWalk(int curr, int steps) const
@@ -250,7 +224,7 @@ bool Instance::loadAgents()
 	string line;
 	ifstream myfile (agent_fname.c_str());
 	if (!myfile.is_open()) 
-	return false;
+	    return false;
 
 	getline(myfile, line);
 	locations.resize(num_of_agents);
@@ -287,3 +261,24 @@ list<int> Instance::getNeighbors(int curr) const
 	}
 	return neighbors;
 }
+
+Instance::Instance(vector<bool> map, const vector<vector<std::pair<int64_t ,int64_t >>> &agents, int nRows, int nCols) :
+    num_of_rows{nRows},
+    num_of_cols{nCols},
+    map_size(nRows * nCols),
+    my_map{std::move(map)},
+    num_of_agents{static_cast<int>(agents.size())},
+    locations{}
+    {
+        locations.reserve(agents.size());
+
+        for(const auto& a : agents){
+            std::vector<int> locs;
+            locs.reserve(a.size());
+
+            for(const auto& coord : a){
+                locs.push_back(linearizeCoordinate(coord.first, coord.second));
+            }
+            locations.push_back(locs);
+        }
+    }

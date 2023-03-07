@@ -807,3 +807,19 @@ bool PBS::hasHigherPriority(int low, int high) const // return true if agent low
     }
     return false;
 }
+
+void PBS::printPaths() const {
+    std::cout << "agent\tcost\tpath" << endl;
+    for (int i = 0; i < num_of_agents; i++)
+    {
+        std::cout << i << "\t" << paths[i]->size() << "\t";
+        for (const auto & t : *paths[i]) {
+            std::cout << "(" << search_engines[0]->instance.getRowCoordinate(t.location)
+                   << "," << search_engines[0]->instance.getColCoordinate(t.location) << ")";
+            if (t.location != paths[i]->back().location) {
+                std::cout << "->";
+            }
+        }
+        std::cout << endl;
+    }
+}

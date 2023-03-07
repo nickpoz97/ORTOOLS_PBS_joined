@@ -43,9 +43,12 @@ public:
 
 	// Save results
 	void saveResults(const string &fileName, const string &instanceName) const;
+	void printResults(const string &fileName, const string &instanceName) const;
 	void saveCT(const string &fileName) const; // write the CT to a file
     void savePaths(const string &fileName) const; // write the paths to a file
 	void clear(); // used for rapid random  restart
+
+    void printPaths() const;
 private:
 	conflict_selection conflict_seletion_rule;
 
@@ -104,7 +107,6 @@ private:
     bool findPathForSingleAgent(PBSNode& node, const set<int>& higher_agents, int a, Path& new_path);
 	void classifyConflicts(PBSNode &parent);
 	void update(PBSNode* node);
-	void printPaths() const;
 
     void topologicalSort(list<int>& stack);
     void topologicalSortUtil(int v, vector<bool> & visited, list<int> & stack);
