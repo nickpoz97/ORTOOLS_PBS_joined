@@ -5,7 +5,6 @@
 #include <boost/program_options.hpp>
 #include <string>
 #include <chrono>
-#include <boost/algorithm/string/join.hpp>
 
 int main(int argc, char** argv){
     namespace po = boost::program_options;
@@ -42,16 +41,6 @@ int main(int argc, char** argv){
 
     auto result = env.solve(vm["c"].as<int>());
 
-    auto end = std::chrono::steady_clock::now();
-    std::chrono::duration<double> elapsed = end - start;
-
-//    for (const auto& agentRoute : result){
-//        for(const auto& coord : agentRoute){
-//            std::cout << '(' << coord.first << ',' << coord.second << "),";
-//        }
-//        std::cout << '\n';
-//    }
-
     Instance instance(
         env.getGrid(vm["grid_path"].as<string>()),
         result,
@@ -59,21 +48,21 @@ int main(int argc, char** argv){
         env.getNCols()
     );
 
-    PBS pbs(instance, true, 1);
+    PBS pbs(instance, true, 0);
 
     srand(0);
     pbs.solve(7200);
 
+    auto end = std::chrono::steady_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
+
+    std::cout << "Time:\t" << elapsed.count() << "\n";
     if (pbs.solution_found){
         pbs.printPaths();
     }
 
-    pbs.clearSearchEngines();
 
-//    std::cout
-//        << vm["a"].as<int>() << ","
-//        << vm["t"].as<int>() << ","
-//        << elapsed.count() << "\n";
+    pbs.clearSearchEngines();
 
     return 0;
 }
