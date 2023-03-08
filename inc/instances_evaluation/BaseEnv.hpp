@@ -29,6 +29,8 @@ public:
 
     size_t getNCols() const;
 
+    int getNAgents() const;
+    int getNTasks() const;
 protected:
     BaseEnv(const std::filesystem::path &agentsFilePath, const std::filesystem::path &taskFilePath,
             const std::filesystem::path &distanceMatrixPath);

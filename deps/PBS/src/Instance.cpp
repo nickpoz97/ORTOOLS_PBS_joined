@@ -262,11 +262,11 @@ list<int> Instance::getNeighbors(int curr) const
 	return neighbors;
 }
 
-Instance::Instance(vector<bool> map, const vector<vector<int>> &agents, int nRows, int nCols) :
+Instance::Instance(vector<bool> map, vector<vector<int>> agents, int nRows, int nCols) :
     num_of_rows{nRows},
     num_of_cols{nCols},
     map_size(nRows * nCols),
     my_map{std::move(map)},
     num_of_agents{static_cast<int>(agents.size())},
-    locations{agents}
+    locations{std::move(agents)}
     {}

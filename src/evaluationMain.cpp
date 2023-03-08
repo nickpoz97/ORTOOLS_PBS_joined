@@ -39,11 +39,9 @@ int main(int argc, char** argv){
             vm["dm_path"].as<std::string>()
     );
 
-    auto result = env.solve(vm["c"].as<int>());
-
     Instance instance(
         env.getGrid(vm["grid_path"].as<string>()),
-        result,
+        env.solve(vm["c"].as<int>()),
         env.getNRows(),
         env.getNCols()
     );
@@ -57,6 +55,10 @@ int main(int argc, char** argv){
     std::chrono::duration<double> elapsed = end - start;
 
     std::cout << "Time:\t" << elapsed.count() << "\n";
+    std::cout << "nA:\t" << env.getNAgents() << "\n";
+    std::cout << "nT:\t" << env.getNTasks() << "\n";
+
+
     if (pbs.solution_found){
         pbs.printPaths();
     }

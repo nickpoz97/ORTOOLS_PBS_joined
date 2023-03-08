@@ -71,4 +71,10 @@ if(${USE_CO_OPT})
     target_compile_definitions(${EVALUATION_EXE} PUBLIC USE_CO_OPT)
 endif()
 
+set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR} CACHE PATH "installation root" FORCE)
 
+install(TARGETS ${GENERATION_EXE} ${EVALUATION_EXE} DESTINATION out)
+install(DIRECTORY data DESTINATION out/data)
+
+file(GLOB_RECURSE SCRIPTS scripts/*)
+install(PROGRAMS ${SCRIPTS} DESTINATION out)

@@ -196,3 +196,11 @@ size_t BaseEnv::getNRows() const {
 size_t BaseEnv::getNCols() const {
     return nCols;
 }
+
+int BaseEnv::getNTasks() const {
+    return static_cast<int>(tasks.size());
+}
+
+int BaseEnv::getNAgents() const {
+    return static_cast<int>(agents.size());
+}
