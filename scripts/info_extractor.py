@@ -12,15 +12,16 @@ def instance_stats(decoded_output: str):
     lines = decoded_output.strip().split('\n')
     header_line_n = 3
 
-    infos = dict()
-
     splitter = lambda s: s.split(':\t')
-    infos["stats"] = {
+    infos = {
         splitter(l)[0]: splitter(l)[1] for l in lines[:header_line_n]
     }
-    infos["agents_span"] = [
-        int(l.split('\t')[1])-1 for l in lines[header_line_n+1:]
-    ]
+
+    agents_span = {int(l.split('\t')[1])-1 for l in lines[header_line_n+1:]}
+
+    infos["makespan"] = max(agents_span)
+    infos["ttt"] = sum(agents_span)
+
     return infos
 
 def all_stats(exe_path: str, instances_root: str):
@@ -30,4 +31,5 @@ def all_stats(exe_path: str, instances_root: str):
     return [instance_stats(execute_instance(exe_path, af, tf)) for af, tf in zip(agents_files, tasks_files)]
 
 if __name__ == "__main__":
-    print(all_stats("out/evaluation", "a40_t130"))
+    stats = all_stats("out/evaluation", "a40_t130")
+    print(stats)
