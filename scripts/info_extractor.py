@@ -1,10 +1,9 @@
 import subprocess
 import os
-import json
 
 def execute_instance(exe_path: str, agents_file_path: str, tasks_file_path: str):
     command = [exe_path, '--a', agents_file_path, '--t', tasks_file_path]
-    #command = f"{exe_path} --a {agents_file_path} --t {tasks_file_path}"
+    print(*command, sep=' ')
 
     result = subprocess.run(command, capture_output=True, check=True)
     return result.stdout.decode("UTF-8")
@@ -31,6 +30,4 @@ def all_stats(exe_path: str, instances_root: str):
     return [instance_stats(execute_instance(exe_path, af, tf)) for af, tf in zip(agents_files, tasks_files)]
 
 if __name__ == "__main__":
-    # res = execute_instance("./out/evaluation", os.path.normpath("./a40_t130/0.agents"), os.path.normpath("./a40_t130/0.tasks"), 40, 130)
-    # print(instance_stats(res))
     print(all_stats("out/evaluation", "a40_t130"))
