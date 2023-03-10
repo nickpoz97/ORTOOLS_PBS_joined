@@ -1,18 +1,27 @@
-#include "instances_evaluation/OrtoolsEnv.hpp"
-#include "commonFunctions.hpp"
-#include "Instance.h"
-#include "PBS.h"
 #include <boost/program_options.hpp>
+#include <filesystem>
 #include <string>
 #include <chrono>
 
+#include "instances_evaluation/OrtoolsEnv.hpp"
+#include "Instance.h"
+#include "PBS.h"
+
 int main(int argc, char** argv){
     namespace po = boost::program_options;
+    namespace fs = std::filesystem;
+
+    fs::path exeCommand = fs::path(argv[0]);
+    fs::path exeDir = (exeCommand.is_absolute() ? exeCommand : fs::current_path() / exeCommand).remove_filename();
+
+    auto defaultGridPath = exeDir / "data" / "grid.txt";
+    auto defaultDMPath = exeDir / "data" / "distance_matrix.npy";
+
     po::options_description desc("Allowed options");
     desc.add_options()
         ("help", "produce help message (use absolute paths or paths relative to working directory)")
-        ("grid_path", po::value<std::string>()->default_value("./data/grid.txt"), "instancesPath of grid file")
-        ("dm_path", po::value<std::string>()->default_value("./data/distance_matrix.npy"), "instancesPath of distance matrix")
+        ("grid_path", po::value<std::string>()->default_value(defaultGridPath), "instancesPath of grid file")
+        ("dm_path", po::value<std::string>()->default_value(defaultDMPath), "instancesPath of distance matrix")
         ("a", po::value<std::string>()->required(), "Agents file")
         ("t", po::value<std::string>()->required(), "Tasks file")
         ("c", po::value<int>()->default_value(3), "Capacity of each Agent");
